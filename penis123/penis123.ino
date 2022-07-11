@@ -3,7 +3,8 @@
 
 #define TFT_CS 5
 #define TFT_DC 21
-int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari;
+int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
+bool drop = false;
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -48,15 +49,35 @@ void setup() {
   tft.setCursor(0, 105);
   pinMode(ud,INPUT_PULLUP);
   pinMode(lr,INPUT_PULLUP);
+  pinMode(A,INPUT_PULLUP);
+  pinMode(B,INPUT_PULLUP);
   draw();
-
+  Serial.begin(9600);
 }
 
 void loop() {
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30) + 1 ,29, 28, ILI9341_BLUE);
   LR = analogRead(lr);
   UD = analogRead(ud);
+  a = digitalRead(A);
+  b = digitalRead(B);
   delay(150);
+  if(a==LOW)
+  {
+    x=x_pokazivac;
+    y=y_pokazivac;
+    Serial.print(x);
+    Serial.println(y);
+    drop = true;
+  }
+  if(drop == true && b==LOW)
+  {
+    board[y_pokazivac][x_pokazivac] = board[y][x];
+    Serial.print(x_pokazivac);
+    Serial.println(y_pokazivac);
+    drop = false;
+    draw();
+  }
   if(UD > 4090)
   {
      y_pokazivac--;

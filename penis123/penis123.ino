@@ -10,7 +10,7 @@
 #define TFT_RED 0xF800
 
 
-int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
+int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart = 27, redraw=39;
 bool drop = false;
 int ilegalno = 0;
 char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -374,7 +374,7 @@ void loop() {
     tft.drawRect((40 + x * 30)+1, (y * 30)+ 1,28, 28, ILI9341_WHITE);
     tft.drawRect((40 + x * 30)+2, (y * 30)+ 2,26, 26, ILI9341_WHITE);
    }
-      if(digitalRead(restart) == LOW) {
+   if(digitalRead(restart) == LOW) {
     ESP.restart();
    }
    if(digitalRead(redraw) == LOW) {

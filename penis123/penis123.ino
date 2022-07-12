@@ -67,6 +67,7 @@ void setup() {
 
 void loop() {
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30)+ 1,28, 28, ILI9341_BLUE);
+  tft.drawRect((40 + x_pokazivac * 30)+2, (y_pokazivac * 30)+ 2,26, 26, ILI9341_BLUE);
   LR = analogRead(lr);
   UD = analogRead(ud);
   a = digitalRead(A);
@@ -79,8 +80,8 @@ void loop() {
     y=y_pokazivac;
     Serial.print(x);
     Serial.println(y);
-    tft.drawRect((40 + x_pokazivac * 30), (y_pokazivac * 30),30, 30, ILI9341_WHITE);
-    drop = true;
+    if(board[y][x]!=' ')
+      drop = true;
   }
   if(drop == true && b==LOW)
   {
@@ -94,29 +95,39 @@ void loop() {
     draw();
     drop = false;
   }
-  if(UD > 4090)
+  if(UD > 4090 && y_pokazivac!=0)
   {
      y_pokazivac--;
      tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
+     tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
   }
     
-  else if(UD > 1700)
+  else if(UD > 1700 && y_pokazivac!=7 && UD < 4000)
   {
     y_pokazivac++;
     tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
+    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
   }
     
-  if(LR > 4090)
+  if(LR > 4090 && x_pokazivac!=0)
   {
     x_pokazivac--;
     tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
+    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
   }
     
-  else if(LR >1700)
+  else if(LR >1700 && x_pokazivac!=7 && LR <4000)
   {
     x_pokazivac++;
     tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
+    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
   }
    x_stari = x_pokazivac;
    y_stari = y_pokazivac;
+   if((x_pokazivac != x || y_pokazivac!=y)&& drop == true)
+   {
+    tft.drawRect((40 + x * 30)+1, (y * 30)+ 1,28, 28, ILI9341_WHITE);
+    tft.drawRect((40 + x * 30)+2, (y * 30)+ 2,26, 26, ILI9341_WHITE);
+   }
+   
 }

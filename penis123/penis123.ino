@@ -2,14 +2,16 @@
 #include <Adafruit_ILI9341.h>
 #define TFT_CS 5
 #define TFT_DC 21
+#define TFT_MEDIUMAQUAMARINE 0x6675
+#define TFT_ROYALBLUE 0x435C
+#define TFT_LIGHTGREEN 0x9772
+#define TFT_GREEN2 0x0400
+#define TFT_GREEN  0x07E0 
+#define TFT_RED 0xF800
 
-int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart=27, redraw = 39;
+
+int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
 bool drop = false;
-int ilegalno = 0;
-char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                          {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
-char crni_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                       {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -23,7 +25,6 @@ char board[8][8] = {{'R', 'H', 'C', 'Q', 'K', 'C', 'H', 'R'},
                     {'r', 'h', 'c', 'q', 'k', 'c', 'h', 'r'}};
 
 void draw() {
-  tft.fillRect(0,0,319,239, ILI9341_BLACK);
    tft.drawRect(40, 0, 240, 240, ILI9341_WHITE);
 
   for(int i = 30; i < 240; i+=30) {
@@ -46,142 +47,130 @@ void draw() {
   }
 }
 
-void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
-
+char meni()
 {
-  int column_to_int = 0, column_from_int = 0;
-  column_to_int = column_to;
-  column_from_int = column_from;
-  char temp_ploca;
-  temp_ploca = board[row_from][column_from_int];
-  board[row_from][column_from_int] = board[row_to][column_to_int];
-  board[row_to][column_to_int] = temp_ploca;
-}
-
-void meni()
-{
-  tft.fillScreen(ILI9341_BLUE);
-  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, ILI9341_BLACK);
-  tft.drawRect(41, 91, 60-1, 2*30-1, ILI9341_YELLOW);
-  tft.drawRect(101, 91, 60-1, 2*30-1, ILI9341_YELLOW);
-  tft.drawRect(161, 91, 60-1, 2*30-1, ILI9341_YELLOW);
-  tft.drawRect(221, 91, 60-1, 2*30-1, ILI9341_YELLOW);
+  tft.fillScreen(TFT_ROYALBLUE);
+  tft.setTextColor(TFT_RED);
+  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, TFT_GREEN);
+  tft.drawRect(41, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(101, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(161, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(221, 91, 60-1, 2*30-1, TFT_RED);
   tft.setTextSize(4);
   tft.setCursor(60, 105);
-  tft.print(board[0][1]);
+  tft.print("H");
   tft.setCursor(120, 105);
-  tft.print(board[0][2]);
+  tft.print("C");
   tft.setCursor(180, 105);
-  tft.print(board[0][0]);
+  tft.print("R");
   tft.setCursor(240, 105);
-  tft.print(board[0][3]);
-}
-//konj
-void konj(int row_to, int row_from, int column_to, int column_from)
-{
-  int column_to_int = 0, column_from_int = 0;
-  column_to_int = column_to;
-  column_from_int = column_from;
-
-  //crni konj
-  if(board[row_from][column_from] == 'h')
+  tft.print("Q");
+  int var=300;
+  while (digitalRead(A)!=LOW)
   {
-    if((abs(row_from-row_to)==2) && (abs(column_to-column_from)==1))
+    analogRead(lr);
+    if(analogRead(lr)>1650&& analogRead(lr)<4000)
     {
-        if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
-        { 
-          for( int i = 0; i<2; i++)
-          {
-            for(int j=0; j<8; j++) 
-            {
-              if(crni_jede[i][j] == ' ') 
-              {
-                crni_jede[i][j] = board[row_to][column_to_int];
-                board[row_to][column_to_int] = ' ';
-              }
-            }
-          } 
-        }
-        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
-        if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
-    }
-    else if(abs(column_from-column_to)==2 && abs(row_from-row_to)==1)
-    {
-      if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
-      { 
-        for( int i = 0; i<2; i++)
-        {
-          for(int j=0; j<8; j++) 
-          {
-            if(crni_jede[i][j] == ' ') 
-            {
-              crni_jede[i][j] = board[row_to][column_to_int];
-              board[row_to][column_to_int] = ' ';
-            }
-          }
-        } 
-      }
-      else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
-      if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
-    }  
-    else 
-    ilegalno=1;
-  }
-    //bijeli konj
-    if(board[row_from][column_from] == 'H')
-    {
-      if((abs(row_from-row_to)==2) && (abs(column_to-column_from)==1))
+      var+=100;
+      delay(300);
+      if(var>400)
       {
-        if (isLowerCase(board[row_to][column_to_int]) > 0 && isUpperCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
-        {
-          for( int i = 0; i<2; i++)
-          {
-            for(int j=0; j<8; j++) 
-            {
-              if(bijeli_jede[i][j] == ' ') 
-              {
-                bijeli_jede[i][j] = board[row_to][column_to_int];
-                board[row_to][column_to_int] = ' ';
-              }
-            }
-          }
-        }
-        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
-        if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
-      }
-    else if(abs(column_from-column_to)==2 && abs(row_from-row_to)==1)
-    {
-      if(board[row_to][column_to_int]==' ')
-      {
-        if (isLowerCase(board[row_to][column_to_int]) > 0 && isUpperCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
-        {
-          for( int i = 0; i<2; i++)
-          {
-            for(int j=0; j<8; j++) 
-            {
-              if(bijeli_jede[i][j] == ' ') 
-              {
-                bijeli_jede[i][j] = board[row_to][column_to_int];
-                board[row_to][column_to_int] = ' ';
-              }
-            }
-          }
-        }
-        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
-        if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
+        var=100;
       }
     }
-    else 
-    ilegalno=1;
-  }
+    //4090
+    else if(analogRead(lr)>4000)
+    {
+      var-=100;
+      delay(300);
+      if(var<100)
+      {
+        var=400;
+      }
+    }
+    if(var==100)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(43, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+    
+    if(var==200)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(103, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+    
+    if(var==300)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(163, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
 
+    if(var==400)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(223, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+    }
+  }
+  if(var==400)
+  {
+    return 'Q';
+  }
+  if(var==300)
+  {
+    return 'R';
+  }
+  if(var==200)
+  {
+    return 'C';
+  }
+  if(var==100)
+  {
+    return 'H';
+  }
+  
 }
-
 
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 
-    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H'){ Serial.println("konj"); Serial.println(ilegalno); konj(row_to, row_from, column_to, column_from);}
+    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H') Serial.println("konj(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'c' || board[row_from][column_from] == 'C') Serial.println("lovac(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K') Serial.println("kralj(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') Serial.println("kraljica(row_to, row_from, column_to, column_from)");
@@ -198,13 +187,12 @@ void setup() {
   pinMode(lr,INPUT_PULLUP);
   pinMode(A,INPUT_PULLUP);
   pinMode(B,INPUT_PULLUP);
-  pinMode(restart,INPUT_PULLUP);
-  pinMode(redraw,INPUT_PULLUP);
   draw();
   Serial.begin(9600);
 }
 
 void loop() {
+  while(true) delay(sizeof(unsigned long long int));
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30)+ 1,28, 28, ILI9341_BLUE);
   tft.drawRect((40 + x_pokazivac * 30)+2, (y_pokazivac * 30)+ 2,26, 26, ILI9341_BLUE);
   LR = analogRead(lr);
@@ -268,12 +256,5 @@ void loop() {
     tft.drawRect((40 + x * 30)+1, (y * 30)+ 1,28, 28, ILI9341_WHITE);
     tft.drawRect((40 + x * 30)+2, (y * 30)+ 2,26, 26, ILI9341_WHITE);
    }
-   if(digitalRead(restart) == LOW) {
-    ESP.restart();
-   }
-   if(digitalRead(redraw) == LOW) {
-    draw();
-   }
-   Serial.println(ilegalno);
-   ilegalno = 0;
+   
 }

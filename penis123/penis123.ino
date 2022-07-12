@@ -3,8 +3,13 @@
 #define TFT_CS 5
 #define TFT_DC 21
 
-int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
+int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart=27, redraw = 39;
 bool drop = false;
+int ilegalno = 0;
+char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                          {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+char crni_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                       {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -58,11 +63,117 @@ void meni()
   tft.setCursor(240, 105);
   tft.print(board[0][3]);
 }
+//konj
+void konj(int row_to, int row_from, int column_to, int column_from)
+{
+  int column_to_int = 0, column_from_int = 0;
+  column_to_int = column_to;
+  column_from_int = column_from;
+
+  //crni konj
+  if(board[row_from][column_from] == 'h')
+  {
+    if((abs(row_from-row_to)==2) && (abs(column_to-column_from)==1))
+    {
+        if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && board[row_to][column_to_int]!='k')
+        { 
+          for( int i = 0; i<2; i++)
+          {
+            for(int j=0; j<8; j++) 
+            {
+              if(crni_jede[i][j] == ' ') 
+              {
+                crni_jede[i][j] = board[row_to][column_to_int];
+                board[row_to][column_to_int] = ' ';
+              }
+            }
+          } 
+        }
+        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+        if(ilegalno == 0) draw();
+    }
+    else if(abs(column_from-column_to)==2 && abs(row_from-row_to)==1)
+    {
+      if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && board[row_to][column_to_int]!='k')
+      { 
+        for( int i = 0; i<2; i++)
+        {
+          for(int j=0; j<8; j++) 
+          {
+            if(crni_jede[i][j] == ' ') 
+            {
+              crni_jede[i][j] = board[row_to][column_to_int];
+              board[row_to][column_to_int] = ' ';
+            }
+          }
+        } 
+      }
+      else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+      if(ilegalno == 0) draw();
+    }  
+    else 
+    ilegalno=1;
+  }
+    //bijeli konj
+    if(board[row_from][column_from] == 'H')
+    Serial.println("Ide Gas");
+    {
+      if((abs(row_from-row_to)==2) && (abs(column_to-column_from)==1))
+      {
+      Serial.println("Ide Gas2");
+        if ((isLowerCase(board[row_to][column_to_int]) == true || board[row_to][column_to_int] == ' ') && isUpperCase(board[row_from][column_from_int]) == true && board[row_to][column_to_int]!='K')
+        {
+        Serial.println("Ide Gas3");
+          for( int i = 0; i<2; i++)
+          {
+            for(int j=0; j<8; j++) 
+            {
+              if(bijeli_jede[i][j] == ' ') 
+              {
+                Serial.println(board[column_to_int][row_to]);
+                bijeli_jede[i][j] = board[row_to][column_to_int];
+                board[row_to][column_to_int] = ' ';
+                Serial.println("Ide Gas4");
+              }
+            }
+          }
+        }
+        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+        if(ilegalno == 0) draw();
+      }
+    else if(abs(column_from-column_to)==2 && abs(row_from-row_to)==1)
+    {
+      if(board[row_to][column_to_int]==' ')
+      {
+        if (isLowerCase(board[row_to][column_to_int]) > 0 && isUpperCase(board[row_from][column_from_int]) > 0 && board[row_to][column_to_int]!='K')
+        {
+          for( int i = 0; i<2; i++)
+          {
+            for(int j=0; j<8; j++) 
+            {
+              if(bijeli_jede[i][j] == ' ') 
+              {
+                bijeli_jede[i][j] = board[row_to][column_to_int];
+                board[row_to][column_to_int] = ' ';
+              }
+            }
+          }
+        }
+        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+        if(ilegalno == 0) draw();
+      }
+    }
+    else 
+    ilegalno=1;
+  }
+
+}
+
 
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 
-    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H') Serial.println("konj(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H'){ Serial.println("konj"); Serial.println(ilegalno); konj(row_to, row_from, column_to, column_from);}
     else if (board[row_from][column_from] == 'c' || board[row_from][column_from] == 'C') Serial.println("lovac(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K') Serial.println("kralj(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') Serial.println("kraljica(row_to, row_from, column_to, column_from)");
@@ -147,5 +258,11 @@ void loop() {
     tft.drawRect((40 + x * 30)+1, (y * 30)+ 1,28, 28, ILI9341_WHITE);
     tft.drawRect((40 + x * 30)+2, (y * 30)+ 2,26, 26, ILI9341_WHITE);
    }
-   
+   if(digitalRead(restart) == LOW) {
+    ESP.restart();
+   }
+   ilegalno = 0;
+   if(digitalRead(redraw) == LOW) {
+    draw();
+   }
 }

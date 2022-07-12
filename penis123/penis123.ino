@@ -12,6 +12,12 @@
 
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
 bool drop = false;
+int ilegalno = 0;
+char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                          {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+char crni_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                       {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -167,6 +173,29 @@ char meni()
   
 }
 
+void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
+{
+  int column_to_int = 0, column_from_int = 0;
+  column_to_int = column_to;
+  column_from_int = column_from;
+  char temp_ploca;
+  temp_ploca = board[row_from][column_from_int];
+  board[row_from][column_from_int] = board[row_to][column_to_int];
+  board[row_to][column_to_int] = temp_ploca;
+}
+
+void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
+
+{
+  int column_to_int = 0, column_from_int = 0;
+  column_to_int = column_to;
+  column_from_int = column_from;
+  char temp_ploca;
+  temp_ploca = board[row_from][column_from_int];
+  board[row_from][column_from_int] = board[row_to][column_to_int];
+  board[row_to][column_to_int] = temp_ploca;
+}
+
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 
@@ -256,5 +285,12 @@ void loop() {
     tft.drawRect((40 + x * 30)+1, (y * 30)+ 1,28, 28, ILI9341_WHITE);
     tft.drawRect((40 + x * 30)+2, (y * 30)+ 2,26, 26, ILI9341_WHITE);
    }
-   
+      if(digitalRead(restart) == LOW) {
+    ESP.restart();
+   }
+   if(digitalRead(redraw) == LOW) {
+    draw();
+   }
+   Serial.println(ilegalno);
+   ilegalno = 0;
 }

@@ -3,10 +3,8 @@
 #define TFT_CS 5
 #define TFT_DC 21
 
-
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
 bool drop = false;
-
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -42,7 +40,6 @@ void draw() {
   }
 }
 
-
 void meni()
 {
   tft.fillScreen(ILI9341_BLUE);
@@ -62,7 +59,6 @@ void meni()
   tft.print(board[0][3]);
 }
 
-
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 
@@ -71,6 +67,7 @@ void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K') Serial.println("kralj(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') Serial.println("kraljica(row_to, row_from, column_to, column_from)");
 }
+
 void setup() {
   tft.begin();
   tft.setRotation(3);
@@ -87,7 +84,6 @@ void setup() {
 }
 
 void loop() {
-  /*
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30)+ 1,28, 28, ILI9341_BLUE);
   tft.drawRect((40 + x_pokazivac * 30)+2, (y_pokazivac * 30)+ 2,26, 26, ILI9341_BLUE);
   LR = analogRead(lr);

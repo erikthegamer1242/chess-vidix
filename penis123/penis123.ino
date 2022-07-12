@@ -42,6 +42,27 @@ void draw() {
   }
 }
 
+
+void meni()
+{
+  tft.fillScreen(ILI9341_BLUE);
+  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, ILI9341_BLACK);
+  tft.drawRect(41, 91, 60-1, 2*30-1, ILI9341_YELLOW);
+  tft.drawRect(101, 91, 60-1, 2*30-1, ILI9341_YELLOW);
+  tft.drawRect(161, 91, 60-1, 2*30-1, ILI9341_YELLOW);
+  tft.drawRect(221, 91, 60-1, 2*30-1, ILI9341_YELLOW);
+  tft.setTextSize(4);
+  tft.setCursor(60, 105);
+  tft.print(board[0][1]);
+  tft.setCursor(120, 105);
+  tft.print(board[0][2]);
+  tft.setCursor(180, 105);
+  tft.print(board[0][0]);
+  tft.setCursor(240, 105);
+  tft.print(board[0][3]);
+}
+
+
 void setup() {
   tft.begin();
   tft.setRotation(3);
@@ -58,6 +79,7 @@ void setup() {
 }
 
 void loop() {
+  /*
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30)+ 1,28, 28, ILI9341_BLUE);
   LR = analogRead(lr);
   UD = analogRead(ud);
@@ -65,12 +87,6 @@ void loop() {
   b = digitalRead(B);
   delay(150);
 
-  if (board[row_from][(char_to_int(column_from))] == 'p' || board[row_from][(char_to_int(column_from))] == 'P') pijuni(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'r' || board[row_from][char_to_int(column_from)] == 'R') kula(row_to, row_from, column_to, column_from); 
-    else if (board[row_from][char_to_int(column_from)] == 'h' || board[row_from][char_to_int(column_from)] == 'H') konj(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'c' || board[row_from][char_to_int(column_from)] == 'C') lovac(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'k' || board[row_from][char_to_int(column_from)] == 'K') kralj(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'q' || board[row_from][char_to_int(column_from)] == 'Q') kraljica(row_to, row_from, column_to, column_from);
 
   
   if(a==LOW)
@@ -118,4 +134,9 @@ void loop() {
   }
    x_stari = x_pokazivac;
    y_stari = y_pokazivac;
+   */
+   
+   meni();
+   //draw();
+   delay(10000);
 }

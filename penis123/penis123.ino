@@ -1,10 +1,12 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
-
 #define TFT_CS 5
 #define TFT_DC 21
+
+
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y;
 bool drop = false;
+
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
@@ -63,7 +65,16 @@ void loop() {
   a = digitalRead(A);
   b = digitalRead(B);
   delay(150);
-  if(a==LOW && drop ==false)
+
+  if (board[row_from][(char_to_int(column_from))] == 'p' || board[row_from][(char_to_int(column_from))] == 'P') pijuni(row_to, row_from, column_to, column_from);
+    else if (board[row_from][char_to_int(column_from)] == 'r' || board[row_from][char_to_int(column_from)] == 'R') kula(row_to, row_from, column_to, column_from); 
+    else if (board[row_from][char_to_int(column_from)] == 'h' || board[row_from][char_to_int(column_from)] == 'H') konj(row_to, row_from, column_to, column_from);
+    else if (board[row_from][char_to_int(column_from)] == 'c' || board[row_from][char_to_int(column_from)] == 'C') lovac(row_to, row_from, column_to, column_from);
+    else if (board[row_from][char_to_int(column_from)] == 'k' || board[row_from][char_to_int(column_from)] == 'K') kralj(row_to, row_from, column_to, column_from);
+    else if (board[row_from][char_to_int(column_from)] == 'q' || board[row_from][char_to_int(column_from)] == 'Q') kraljica(row_to, row_from, column_to, column_from);
+
+  
+  if(a==LOW)
   {
     x=x_pokazivac;
     y=y_pokazivac;
@@ -74,6 +85,7 @@ void loop() {
   }
   if(drop == true && b==LOW)
   {
+    
     board[y_pokazivac][x_pokazivac] = board[y][x];
     board[y][x] =' ';
     Serial.print(x_pokazivac);

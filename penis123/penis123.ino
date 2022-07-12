@@ -42,6 +42,14 @@ void draw() {
   }
 }
 
+void whichFigure(int column_to, int column_from, int row_to, int row_from) {
+    if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 
+    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H') Serial.println("konj(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'c' || board[row_from][column_from] == 'C') Serial.println("lovac(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K') Serial.println("kralj(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') Serial.println("kraljica(row_to, row_from, column_to, column_from)");
+}
 void setup() {
   tft.begin();
   tft.setRotation(3);
@@ -64,14 +72,6 @@ void loop() {
   a = digitalRead(A);
   b = digitalRead(B);
   delay(150);
-
-  if (board[row_from][(char_to_int(column_from))] == 'p' || board[row_from][(char_to_int(column_from))] == 'P') pijuni(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'r' || board[row_from][char_to_int(column_from)] == 'R') kula(row_to, row_from, column_to, column_from); 
-    else if (board[row_from][char_to_int(column_from)] == 'h' || board[row_from][char_to_int(column_from)] == 'H') konj(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'c' || board[row_from][char_to_int(column_from)] == 'C') lovac(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'k' || board[row_from][char_to_int(column_from)] == 'K') kralj(row_to, row_from, column_to, column_from);
-    else if (board[row_from][char_to_int(column_from)] == 'q' || board[row_from][char_to_int(column_from)] == 'Q') kraljica(row_to, row_from, column_to, column_from);
-
   
   if(a==LOW)
   {
@@ -84,11 +84,12 @@ void loop() {
   }
   if(drop == true && b==LOW)
   {
-    
-    board[y_pokazivac][x_pokazivac] = board[y][x];
-    board[y][x] =' ';
-    Serial.print(x_pokazivac);
-    Serial.println(y_pokazivac);
+   whichFigure(x_pokazivac, x, y_pokazivac, y);
+// Debug logika za grafiku    
+//    board[y_pokazivac][x_pokazivac] = board[y][x];
+//    board[y][x] =' ';
+//    Serial.print(x_pokazivac);
+//    Serial.println(y_pokazivac);
     tft.fillRect((40 + x * 30)+1, (y * 30) + 1 ,28, 28, ILI9341_BLACK);
     draw();
     drop = false;

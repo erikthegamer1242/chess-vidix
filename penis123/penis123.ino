@@ -2,6 +2,13 @@
 #include <Adafruit_ILI9341.h>
 #define TFT_CS 5
 #define TFT_DC 21
+#define TFT_MEDIUMAQUAMARINE 0x6675
+#define TFT_ROYALBLUE 0x435C
+#define TFT_LIGHTGREEN 0x9772
+#define TFT_GREEN2 0x0400
+#define TFT_GREEN  0x07E0 
+#define TFT_RED 0xF800
+
 
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart=27, redraw = 39;
 bool drop = false;
@@ -45,23 +52,139 @@ void draw() {
   }
 }
 
-void meni()
+
+
+
+
+
+
+char meni()
 {
-  tft.fillScreen(ILI9341_BLUE);
-  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, ILI9341_BLACK);
-  tft.drawRect(41, 91, 60-1, 2*30-1, ILI9341_YELLOW);
-  tft.drawRect(101, 91, 60-1, 2*30-1, ILI9341_YELLOW);
-  tft.drawRect(161, 91, 60-1, 2*30-1, ILI9341_YELLOW);
-  tft.drawRect(221, 91, 60-1, 2*30-1, ILI9341_YELLOW);
+  tft.fillScreen(TFT_ROYALBLUE);
+  tft.setTextColor(TFT_RED);
+  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, TFT_GREEN);
+  tft.drawRect(41, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(101, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(161, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(221, 91, 60-1, 2*30-1, TFT_RED);
   tft.setTextSize(4);
   tft.setCursor(60, 105);
-  tft.print(board[0][1]);
+  tft.print("H");
   tft.setCursor(120, 105);
-  tft.print(board[0][2]);
+  tft.print("C");
   tft.setCursor(180, 105);
-  tft.print(board[0][0]);
+  tft.print("R");
   tft.setCursor(240, 105);
-  tft.print(board[0][3]);
+  tft.print("Q");
+  int var=300;
+  while (digitalRead(A)!=LOW)
+  {
+    analogRead(lr);
+    if(analogRead(lr)>1650&& analogRead(lr)<4000)
+    {
+      var+=100;
+      delay(300);
+      if(var>400)
+      {
+        var=100;
+      }
+    }
+    //4090
+    else if(analogRead(lr)>4000)
+    {
+      var-=100;
+      delay(300);
+      if(var<100)
+      {
+        var=400;
+      }
+    }
+    if(var==100)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(43, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+    
+    if(var==200)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(103, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+    
+    if(var==300)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(163, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+
+    if(var==400)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(223, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+    }
+  }
+  if(var==400)
+  {
+    return 'Q';
+  }
+  if(var==300)
+  {
+    return 'R';
+  }
+  if(var==200)
+  {
+    return 'C';
+  }
+  if(var==100)
+  {
+    return 'H';
+  }
+
+
+
+
+
+
+
+
+
+  
 }
 //konj
 void konj(int row_to, int row_from, int column_to, int column_from)
@@ -195,6 +318,10 @@ void setup() {
 }
 
 void loop() {
+  Serial.println(meni());
+  delay(500);
+  /*
+  while(true) delay(sizeof(unsigned long long int));
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30)+ 1,28, 28, ILI9341_BLUE);
   tft.drawRect((40 + x_pokazivac * 30)+2, (y_pokazivac * 30)+ 2,26, 26, ILI9341_BLUE);
   LR = analogRead(lr);
@@ -265,4 +392,5 @@ void loop() {
    if(digitalRead(redraw) == LOW) {
     draw();
    }
+   */
 }

@@ -288,7 +288,7 @@ void konj(int row_to, int row_from, int column_to, int column_from)
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 
-    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H') Serial.println("konj(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H'){ Serial.println("konj"); Serial.println(ilegalno); konj(row_to, row_from, column_to, column_from);}
     else if (board[row_from][column_from] == 'c' || board[row_from][column_from] == 'C') Serial.println("lovac(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K') Serial.println("kralj(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') Serial.println("kraljica(row_to, row_from, column_to, column_from)");
@@ -305,9 +305,10 @@ void setup() {
   pinMode(lr,INPUT_PULLUP);
   pinMode(A,INPUT_PULLUP);
   pinMode(B,INPUT_PULLUP);
+  pinMode(restart,INPUT_PULLUP);
+  pinMode(redraw,INPUT_PULLUP);
   draw();
   Serial.begin(9600);
-  meni();
 }
 
 void loop() {

@@ -184,18 +184,6 @@ void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
   board[row_to][column_to_int] = temp_ploca;
 }
 
-void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
-
-{
-  int column_to_int = 0, column_from_int = 0;
-  column_to_int = column_to;
-  column_from_int = column_from;
-  char temp_ploca;
-  temp_ploca = board[row_from][column_from_int];
-  board[row_from][column_from_int] = board[row_to][column_to_int];
-  board[row_to][column_to_int] = temp_ploca;
-}
-
 //konj
 void konj(int row_to, int row_from, int column_to, int column_from)
 {
@@ -319,10 +307,10 @@ void setup() {
   pinMode(B,INPUT_PULLUP);
   draw();
   Serial.begin(9600);
+  meni();
 }
 
 void loop() {
-  while(true) delay(sizeof(unsigned long long int));
   tft.drawRect((40 + x_pokazivac * 30)+1, (y_pokazivac * 30)+ 1,28, 28, ILI9341_BLUE);
   tft.drawRect((40 + x_pokazivac * 30)+2, (y_pokazivac * 30)+ 2,26, 26, ILI9341_BLUE);
   LR = analogRead(lr);
@@ -392,6 +380,5 @@ void loop() {
    if(digitalRead(redraw) == LOW) {
     draw();
    }
-   Serial.println(ilegalno);
    ilegalno = 0;
 }

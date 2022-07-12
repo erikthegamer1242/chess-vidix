@@ -196,6 +196,107 @@ void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
   board[row_to][column_to_int] = temp_ploca;
 }
 
+//konj
+void konj(int row_to, int row_from, int column_to, int column_from)
+{
+  int column_to_int = 0, column_from_int = 0;
+  column_to_int = column_to;
+  column_from_int = column_from;
+
+  //crni konj
+  if(board[row_from][column_from] == 'h')
+  {
+    if((abs(row_from-row_to)==2) && (abs(column_to-column_from)==1))
+    {
+        if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
+        { 
+          for( int i = 0; i<2; i++)
+          {
+            for(int j=0; j<8; j++) 
+            {
+              if(crni_jede[i][j] == ' ') 
+              {
+                crni_jede[i][j] = board[row_to][column_to_int];
+                board[row_to][column_to_int] = ' ';
+              }
+            }
+          } 
+        }
+        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+        if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
+    }
+    else if(abs(column_from-column_to)==2 && abs(row_from-row_to)==1)
+    {
+      if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
+      { 
+        for( int i = 0; i<2; i++)
+        {
+          for(int j=0; j<8; j++) 
+          {
+            if(crni_jede[i][j] == ' ') 
+            {
+              crni_jede[i][j] = board[row_to][column_to_int];
+              board[row_to][column_to_int] = ' ';
+            }
+          }
+        } 
+      }
+      else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+      if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
+    }  
+    else 
+    ilegalno=1;
+  }
+    //bijeli konj
+    if(board[row_from][column_from] == 'H')
+    {
+      if((abs(row_from-row_to)==2) && (abs(column_to-column_from)==1))
+      {
+        if (isLowerCase(board[row_to][column_to_int]) > 0 && isUpperCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
+        {
+          for( int i = 0; i<2; i++)
+          {
+            for(int j=0; j<8; j++) 
+            {
+              if(bijeli_jede[i][j] == ' ') 
+              {
+                bijeli_jede[i][j] = board[row_to][column_to_int];
+                board[row_to][column_to_int] = ' ';
+              }
+            }
+          }
+        }
+        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+        if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
+      }
+    else if(abs(column_from-column_to)==2 && abs(row_from-row_to)==1)
+    {
+      if(board[row_to][column_to_int]==' ')
+      {
+        if (isLowerCase(board[row_to][column_to_int]) > 0 && isUpperCase(board[row_from][column_from_int]) > 0 && toUpperCase(board[row_to][column_to_int])!='K')
+        {
+          for( int i = 0; i<2; i++)
+          {
+            for(int j=0; j<8; j++) 
+            {
+              if(bijeli_jede[i][j] == ' ') 
+              {
+                bijeli_jede[i][j] = board[row_to][column_to_int];
+                board[row_to][column_to_int] = ' ';
+              }
+            }
+          }
+        }
+        else if(isLowerCase(board[row_to][column_to_int]) > 0) ilegalno = 1;
+        if(ilegalno == 0) logika_za_crtanje(row_to, row_from, column_to, column_from);
+      }
+    }
+    else 
+    ilegalno=1;
+  }
+
+}
+
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') Serial.println("pijuni(row_to, row_from, column_to, column_from)");
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R') Serial.println("kula(row_to, row_from, column_to, column_from)"); 

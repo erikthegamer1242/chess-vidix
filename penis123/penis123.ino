@@ -457,16 +457,6 @@ void lovac(int row_to, int row_from, int column_to, int column_from)
       ilegalno = 1;
 }
 
-
-
-
-
-
-
-
-
-
-
 void kula(int row_to, int row_from, int column_to, int column_from)
 {
   int column_to_int = 0, column_from_int = 0;
@@ -544,7 +534,7 @@ void kula(int row_to, int row_from, int column_to, int column_from)
                     if(crni_jede[i][j] == ' ') 
                     {
                       crni_jede[i][j] = board[row_to][column_to_int];
-                      board[row_to][column_to_int] = ' ';
+                    board[row_to][column_to_int] = ' ';
                     }
                   }
                 }
@@ -564,19 +554,18 @@ void kula(int row_to, int row_from, int column_to, int column_from)
                 }
               }
             }
-            else 
-            moze=0;
+            //else moze=0;
           }
         }
     }
     else if(column_to_int != column_from_int && row_to == row_from) 
     {
-       if ((isUpperCase(board[row_from][column_from_int]) >= 1 && isUpperCase(board[row_to][column_to_int]) >= 1) || (isLowerCase(board[row_from][column_from_int]) >= 1 && isLowerCase(board[row_to][column_to_int]) >= 1))
+       if ((isUpperCase(board[row_from][column_from_int]) > 0 && isUpperCase(board[row_to][column_to_int]) > 0) || (isLowerCase(board[row_from][column_from_int]) > 0 && isLowerCase(board[row_to][column_to_int]) > 0))
        {
            ilegalno = 1;
            moze = 0;
        }
-      if(column_from_int - column_to_int > 0) //Lijevo
+      else if(column_from_int - column_to_int > 0) //Lijevo
       {
         for(int i = column_from_int-1; i>=column_to_int; i--)
         {
@@ -616,8 +605,6 @@ void kula(int row_to, int row_from, int column_to, int column_from)
                 }
               }
           }
-          else 
-            moze=0;
         }
       }
       else if(column_from_int - column_to_int < 0) //Desno
@@ -626,10 +613,7 @@ void kula(int row_to, int row_from, int column_to, int column_from)
         {
           if(board[row_to][i] != ' ') 
           {
-            if(i!=column_to_int)
-              moze=0;
-            if(i==column_to_int)
-            {              
+            if(i!=column_to_int) moze=0;           
               if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && board[row_to][column_to_int]!='K' && moze==1)
               {
                 for( int i = 0; i<2; i++)
@@ -657,10 +641,7 @@ void kula(int row_to, int row_from, int column_to, int column_from)
                     }
                   }
                 }
-              }   
-            }
-            else 
-              moze=1;
+              }
           }
         }
       }
@@ -695,28 +676,6 @@ void kula(int row_to, int row_from, int column_to, int column_from)
     ilegalno = 1;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') { Serial.println("pijun"); pijuni(row_to, row_from, column_to, column_from); }

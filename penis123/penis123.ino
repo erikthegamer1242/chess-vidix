@@ -32,12 +32,11 @@ char board[8][8] = {{'R', 'H', 'C', 'Q', 'K', 'C', 'H', 'R'},
 
 void draw() {
   tft.setRotation(3);
-  tft.fillScreen(ILI9341_BLACK);
   tft.setTextColor(ILI9341_YELLOW);
   tft.setTextSize(3.5);
   tft.setCursor(0, 105);
-   tft.fillRect(0, 0, 319, 239, ILI9341_BLACK);
-   tft.drawRect(40, 0, 240, 240, ILI9341_WHITE);
+  tft.fillRect(0, 0, 319, 239, ILI9341_BLACK);
+  tft.drawRect(40, 0, 240, 240, ILI9341_WHITE);
 
   for(int i = 30; i < 240; i+=30) {
     tft.drawFastVLine(i + 40, 0, 240, ILI9341_RED);

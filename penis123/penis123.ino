@@ -728,12 +728,12 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
   column_from_int = column_from;
   int moze=1;
 
-  if(toUpperCase(board[row_from][column_from]) == 'K')
+  if(board[row_from][column_from_int] == 'K' || board[row_from][column_from_int] == 'k')
   {
-    if(abs(row_from-row_to)<2 && abs(column_from-column_to)<2)
+    if(abs(row_from-row_to)<=1 && abs(column_from-column_to)<=1)
     {
-      if(board[row_to][column_to_int]!=' ')
-        moze=0;
+      if(board[row_to][column_to_int]==' ')
+      {
       if(board[row_from][column_from_int]=='k')
       {
         if(board[row_to+1][column_to_int]=='K')
@@ -777,9 +777,44 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
       else
         ilegalno=1;
     }
-    else
-      ilegalno=1;
+    else if(isUpperCase (board[row_from][column_from_int])!= isUpperCase (board[row_to][column_to_int]))
+    {
+      moze=1;
+      if (isUpperCase(board[row_to][column_to_int]) > 0 && isLowerCase(board[row_from][column_from_int]) > 0 && board[row_to][column_to_int]!='K' && moze==1)
+              {
+                for( int i = 0; i<2; i++)
+                {
+                  for(int j=0; j<8; j++) 
+                  {
+                    if(crni_jede[i][j] == ' ') 
+                    {
+                      crni_jede[i][j] = board[row_to][column_to_int];
+                      board[row_to][column_to_int] = ' ';
+                    }
+                  }
+                }
+              }
+              if (isLowerCase(board[row_to][column_to_int]) > 0 && isUpperCase(board[row_from][column_from_int]) > 0 && board[row_to][column_to_int]!='k' && moze==1)
+              {
+                for( int i = 0; i<2; i++)
+                {
+                  for(int j=0; j<8; j++) 
+                  {
+                    if(bijeli_jede[i][j] == ' ') 
+                    {
+                      bijeli_jede[i][j] = board[row_to][column_to_int];
+                      board[row_to][column_to_int] = ' ';
+                    }
+                  }
+                }
+              }
+              logika_za_crtanje(row_to, row_from, column_to, column_from);
+    }
+      
+   }
   }
+  
+        
 }
 
 void kraljica(int row_to, int row_from, int column_to, int column_from)

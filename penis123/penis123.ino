@@ -677,12 +677,74 @@ void kula(int row_to, int row_from, int column_to, int column_from)
   }
 }
 
+//kralj
+void kralj(int row_to, int row_from, int column_to, int column_from)
+{
+  int column_to_int = 0, column_from_int = 0;
+  column_to_int = column_to;
+  column_from_int = column_from;
+  int moze=1;
+
+  if(toUpperCase(board[row_from][column_from]) == 'K')
+  {
+    if(abs(row_from-row_to)<2 && abs(column_from-column_to)<2)
+    {
+      if(board[row_to][column_to_int]!=' ')
+        moze=0;
+      if(board[row_from][column_from_int]=='k')
+      {
+        if(board[row_to+1][column_to_int]=='K')
+          moze=0;
+        if(board[row_to+1][column_to_int+1]=='K')
+          moze=0;
+        if(board[row_to+1][column_to_int-1]=='K')
+          moze=0;
+        if(board[row_to][column_to_int+1]=='K')
+          moze=0;
+        if(board[row_to-1][column_to_int+1]=='K')
+          moze=0;
+        if(board[row_to-1][column_to_int-1]=='K')
+          moze=0;
+        if(board[row_to-1][column_to_int]=='K')
+          moze=0;
+        if(board[row_to][column_to_int-1]=='K')
+          moze=0;
+      }
+      if(board[row_from][column_from_int]=='K')
+      {
+        if(board[row_to+1][column_to_int]=='k')
+          moze=0;
+        if(board[row_to+1][column_to_int+1]=='k')
+          moze=0;
+        if(board[row_to+1][column_to_int-1]=='k')
+          moze=0;
+        if(board[row_to][column_to_int+1]=='k')
+          moze=0;
+        if(board[row_to-1][column_to_int+1]=='k')
+          moze=0;
+        if(board[row_to-1][column_to_int-1]=='k')
+          moze=0;
+        if(board[row_to-1][column_to_int]=='k')
+          moze=0;
+        if(board[row_to][column_to_int-1]=='k')
+          moze=0;
+      }
+      if(moze==1)
+        logika_za_crtanje(row_to, row_from, column_to, column_from);
+      else
+        ilegalno=1;
+    }
+    else
+      ilegalno=1;
+  }
+}
+
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') { Serial.println("pijun"); pijuni(row_to, row_from, column_to, column_from); }
     else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R'){ Serial.println("kula"); kula(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H'){ Serial.println("konj"); Serial.println(ilegalno); konj(row_to, row_from, column_to, column_from);}
+    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H'){ Serial.println("konj"); konj(row_to, row_from, column_to, column_from);}
     else if (board[row_from][column_from] == 'c' || board[row_from][column_from] == 'C'){ Serial.println("lovac"); lovac(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K') Serial.println("kralj(row_to, row_from, column_to, column_from)");
+    else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K'){ Serial.println("kralj"); kralj(row_to, row_from, column_to, column_from);}
     else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') Serial.println("kraljica(row_to, row_from, column_to, column_from)");
 }
 

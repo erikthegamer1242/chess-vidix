@@ -28,7 +28,7 @@ char board[8][8] = {{'R', 'H', 'C', 'Q', 'K', 'C', 'H', 'R'},
                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-                    {'r', 'h', 'c', 'q', 'k', 'c', 'h', 'r'}};
+                    {'r', 'h', 'c', 'q', 'k', 'p', 'h', 'r'}};
 
 void draw() {
   tft.setRotation(3);
@@ -393,30 +393,73 @@ void lovac(int row_to, int row_from, int column_to, int column_from)
 
   if (abs(row_from - row_to) == abs(column_from_int - column_to_int))
   {
-      for (int i = row_from; i != row_to;)
-      {
-          for (int j = column_from_int; j != column_to_int;)
+//      for (int i = row_from; i != row_to;)
+//      {
+////          for (int j = column_from_int; j != column_to_int;)
+//          {
+//              if (row_from > row_to)
+//                  i--;
+//              else
+//                  i++;
+//              if (column_from_int > column_to_int)
+//                  j--;
+//              else
+//                  j++;
+//              if (board[i][j] != ' ')
+//                  moze = 0;
+//              if ((abs(i - row_to) == 1 && abs(j - column_to_int) == 1) && (isUpperCase(board[row_from][column_from_int]) >= 1 && isLowerCase(board[row_to][column_to_int]) >= 1) || (isLowerCase(board[row_from][column_from_int]) >= 1 && isUpperCase(board[row_to][column_to_int]) >= 1))
+//              {
+//                 moze_jest = 1;
+//              }
+//          }
+//      }
+
+    moze_jest = 0,moze=0;
+    int j=row_from,i=column_from;
+    Serial.print(row_to);
+    Serial.print(column_to_int);
+      for(int c=0;c<8;c++){
+          Serial.println(i);
+          Serial.println(j);
+         if (j > row_to)
+            j--;
+        else if(j < row_to)
+            j++;
+        if (i > column_to_int)
+            i--;
+        else if (i < column_to_int)
+            i++;
+        if(board[j][i] !=' ' &&  j!=row_to && i!=column_to_int)
+        {
+          moze=0;
+            Serial.println("Skacem");
+          break;
+        }     
+          if(j == row_to && i==column_to_int)
+         {
+          Serial.println("da");
+          if(board[row_to][column_to_int]==' ')
           {
-              if (row_from > row_to)
-                  i--;
-              else
-                  i++;
-              if (column_from_int > column_to_int)
-                  j--;
-              else
-                  j++;
-              if (board[i][j] != ' ')
-                  moze = 0;
-              if ((abs(i - row_to) == 1 && abs(j - column_to_int) == 1) && (isUpperCase(board[row_from][column_from_int]) >= 1 && isLowerCase(board[row_to][column_to_int]) >= 1) || (isLowerCase(board[row_from][column_from_int]) >= 1 && isUpperCase(board[row_to][column_to_int]) >= 1))
-              {
-                 moze_jest = 1;
-              }
+            moze = 1;
+          
+            break;
           }
+          else if(isUpperCase(board[row_from][column_from_int])!=isUpperCase(board[row_to][column_to_int]))
+          {
+            moze = 1;
+            moze_jest = 1;
+            break;
+          }
+          else
+            break;
+         }
       }
-      if (moze == 1)
+                  if (moze == 1 && moze_jest ==0)
       {
           logika_za_crtanje(row_to, row_from, column_to, column_from);
       }
+      
+
       if (moze_jest)
       {
      //Crni jede

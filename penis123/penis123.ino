@@ -826,12 +826,12 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
   column_from_int = column_from;
   int moze=1;
 
-  if(toUpperCase(board[row_from][column_from]) == 'K')
+  if(board[row_from][column_from_int] == 'K' || board[row_from][column_from_int] == 'k')
   {
-    if(abs(row_from-row_to)<2 && abs(column_from-column_to)<2)
+    if(abs(row_from-row_to)<=1 && abs(column_from-column_to)<=1)
     {
-      if(board[row_to][column_to_int]!=' ')
-        moze=0;
+      if(board[row_to][column_to_int]==' ')
+      {
       if(board[row_from][column_from_int]=='k')
       {
         if(board[row_to+1][column_to_int]=='K')
@@ -914,6 +914,9 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
   
         
 }
+  
+        
+
 
 void kraljica(int row_to, int row_from, int column_to, int column_from)
 {

@@ -8,10 +8,11 @@
 #define TFT_GREEN2 0x0400
 #define TFT_GREEN  0x07E0 
 #define TFT_RED 0xF800
-
+#define TFT_Tamni_Kvadratic 0x6982
+#define TFT_Svjetli_Kvadratic 0xF693
 
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart = 27, redraw=39;
-bool drop = false;
+bool drop = false,zastave;
 int ilegalno = 0;
 char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
@@ -29,6 +30,13 @@ char board[8][8] = {{'R', 'H', 'C', 'Q', 'K', 'C', 'H', 'R'},
                     {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                     {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
                     {'r', 'h', 'c', 'q', 'k', 'c', 'h', 'r'}};
+int return_color(int x, int y) {
+  if((x + y) % 2 == 0) return 0xF693;
+  else return 0x6982;
+
+  
+}
+
 
 void draw() {
   tft.setRotation(3);
@@ -40,12 +48,34 @@ void draw() {
 
   for(int i = 30; i < 240; i+=30) {
     tft.drawFastVLine(i + 40, 0, 240, ILI9341_RED);
+      
   }
+  bool zas = false;
   for(int i = 30; i < 240; i+=30) {
     tft.drawFastHLine(40, i, 240, ILI9341_RED);
+
+    //tft.fillRect(i + 40, 0, 30, 30, ILI9341_BLACK);
   }
+ // for(int i=30;i < 
   int boardX=0;
   int boardY=0;
+  for(int i = 0; i < 240; i+=30)
+  {
+    zas = !zas;
+    for(int j = 0; j < 240; j+=30)
+    {
+     if(zas == true)
+      {
+        tft.fillRect(j + 40, i, 30, 30, TFT_Svjetli_Kvadratic);
+        zas = false;
+      }
+    else
+      {
+        tft.fillRect(j + 40, i, 30, 30, TFT_Tamni_Kvadratic);
+         zas = true;
+      }
+    }
+  }
 
   for(int j = 0; j < 240; j+=30) {
     for(int i = 0; i < 240; i+=30) {
@@ -1205,29 +1235,29 @@ void loop() {
   if(UD > 4090 && y_pokazivac!=0)
   {
      y_pokazivac--;
-     tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
-     tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
+     tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, return_color(x_stari,y_stari));
+     tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, return_color(x_stari,y_stari));
   }
     
   else if(UD > 1700 && y_pokazivac!=7 && UD < 4000)
   {
     y_pokazivac++;
-    tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
-    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
+    tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, return_color(x_stari,y_stari));
+    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, return_color(x_stari,y_stari));
   }
     
   if(LR > 4090 && x_pokazivac!=0)
   {
     x_pokazivac--;
-    tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
-    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
+    tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, return_color(x_stari,y_stari));
+    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, return_color(x_stari,y_stari));
   }
     
   else if(LR >1700 && x_pokazivac!=7 && LR <4000)
   {
     x_pokazivac++;
-    tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, ILI9341_BLACK);
-    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, ILI9341_BLACK);
+    tft.drawRect((40 + x_stari * 30)+1, (y_stari * 30) + 1 ,28, 28, return_color(x_stari,y_stari));
+    tft.drawRect((40 + x_stari * 30)+2, (y_stari * 30)+ 2,26, 26, return_color(x_stari,y_stari));
   }
    x_stari = x_pokazivac;
    y_stari = y_pokazivac;

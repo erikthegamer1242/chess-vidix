@@ -9,12 +9,14 @@
 #define TFT_GREEN  0x07E0 
 #define TFT_RED 0xF800
 #define TFT_WHITE 0xFFFF
-#define TFT_BLACK 0x0000
+#define TFT_BLACK 0x6969
+#define TFT_Tamni_Kvadratic 0x6982
+#define TFT_Svjetli_Kvadratic 0xF693
 
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart = 27, redraw=39;
 bool drop = false;
 int ilegalno = 0;
-int na_potezu = 1;
+bool na_potezu = false;
 char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
 char crni_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -126,11 +128,11 @@ void draw() {
   }
 }
 
-char meni()
+char meni_crni()
 {
-  tft.fillScreen(TFT_ROYALBLUE);
-  tft.setTextColor(TFT_RED);
-  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, TFT_GREEN);
+  tft.fillScreen(ILI9341_BLACK);
+  tft.setTextColor(ILI9341_BLACK);
+  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, TFT_RED);
   tft.drawRect(41, 91, 60-1, 2*30-1, TFT_RED);
   tft.drawRect(101, 91, 60-1, 2*30-1, TFT_RED);
   tft.drawRect(161, 91, 60-1, 2*30-1, TFT_RED);
@@ -246,6 +248,126 @@ char meni()
   
 }
 
+char meni_bijeli()
+{
+  tft.fillScreen(ILI9341_WHITE);
+  tft.setTextColor(ILI9341_WHITE);
+  tft.fillRoundRect(41, 61, 8*30-1, 4*30-1, 19, TFT_RED);
+  tft.drawRect(41, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(101, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(161, 91, 60-1, 2*30-1, TFT_RED);
+  tft.drawRect(221, 91, 60-1, 2*30-1, TFT_RED);
+  tft.setTextSize(4);
+  tft.setCursor(60, 105);
+  tft.print("H");
+  tft.setCursor(120, 105);
+  tft.print("C");
+  tft.setCursor(180, 105);
+  tft.print("R");
+  tft.setCursor(240, 105);
+  tft.print("Q");
+  int var=300;
+  while (digitalRead(A)!=LOW)
+  {
+    analogRead(lr);
+    if(analogRead(lr)>1650&& analogRead(lr)<4000)
+    {
+      var+=100;
+      delay(300);
+      if(var>400)
+      {
+        var=100;
+      }
+    }
+    //4090
+    else if(analogRead(lr)>4000)
+    {
+      var-=100;
+      delay(300);
+      if(var<100)
+      {
+        var=400;
+      }
+    }
+    if(var==100)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(43, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+    
+    if(var==200)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(103, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+    
+    if(var==300)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(163, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(223, 93, 60-5, 2*30-5, ILI9341_BLACK);
+    }
+
+    if(var==400)
+    {
+        tft.drawRect(42, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(43, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(102, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(103, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(162, 92, 60-3, 2*30-3, ILI9341_BLACK);
+        tft.drawRect(163, 93, 60-5, 2*30-5, ILI9341_BLACK);
+        
+        tft.drawRect(222, 92, 60-3, 2*30-3, TFT_LIGHTGREEN);
+        tft.drawRect(223, 93, 60-5, 2*30-5, TFT_LIGHTGREEN);
+    }
+  }
+  if(var==400)
+  {
+    return 'q';
+  }
+  if(var==300)
+  {
+    return 'r';
+  }
+  if(var==200)
+  {
+    return 'c';
+  }
+  if(var==100)
+  {
+    return 'h';
+  }
+  
+}
+
 void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
 {
   int column_to_int = 0, column_from_int = 0;
@@ -260,6 +382,9 @@ void logika_za_crtanje(int row_to, int row_from, int column_to, int column_from)
 //konj
 void konj(int row_to, int row_from, int column_to, int column_from)
 {
+  if(na_potezu == true) na_potezu = false;
+  else na_potezu = true;
+  Serial.println(na_potezu);
   int column_to_int = 0, column_from_int = 0;
   column_to_int = column_to;
   column_from_int = column_from;
@@ -356,7 +481,9 @@ if(board[row_from][column_from] == 'H')
 
 //pijuni
 void pijuni(int row_to, int row_from, int column_to, int column_from) {
-    int column_to_int = 0, column_from_int = 0;
+  if(na_potezu == true) na_potezu = false;   else na_potezu = true;
+  Serial.println(na_potezu);
+  int column_to_int = 0, column_from_int = 0;
   column_to_int = column_to;
   column_from_int = column_from;
 
@@ -378,7 +505,7 @@ void pijuni(int row_to, int row_from, int column_to, int column_from) {
     } 
     else if (row_to == 0 && row_from == 1)
     {
-        board[row_to][column_to_int] = meni();
+        board[row_to][column_to_int] = meni_crni();
         board[row_from][column_from_int] = ' ';
     }
 
@@ -423,7 +550,7 @@ void pijuni(int row_to, int row_from, int column_to, int column_from) {
     } 
     else if (row_to == 7 && row_from == 6)
     {
-        board[row_to][column_to_int] = meni();
+        board[row_to][column_to_int] = meni_bijeli();
         board[row_from][column_from_int] = ' ';
     }
     else
@@ -454,6 +581,8 @@ void pijuni(int row_to, int row_from, int column_to, int column_from) {
 //lovac
 void lovac(int row_to, int row_from, int column_to, int column_from)
 {
+  if(na_potezu == true) na_potezu = false;   else na_potezu = true;
+  Serial.println(na_potezu);
   int column_to_int = 0, column_from_int = 0;
   column_to_int = column_to;
   column_from_int = column_from;
@@ -487,8 +616,6 @@ void lovac(int row_to, int row_from, int column_to, int column_from)
     Serial.print(row_to);
     Serial.print(column_to_int);
       for(int c=0;c<8;c++){
-          Serial.println(i);
-          Serial.println(j);
          if (j > row_to)
             j--;
         else if(j < row_to)
@@ -500,12 +627,10 @@ void lovac(int row_to, int row_from, int column_to, int column_from)
         if(board[j][i] !=' ' &&  j!=row_to && i!=column_to_int)
         {
           moze=0;
-            Serial.println("Skacem");
           break;
         }     
           if(j == row_to && i==column_to_int)
          {
-          Serial.println("da");
           if(board[row_to][column_to_int]==' ')
           {
             moze = 1;
@@ -787,30 +912,27 @@ void kula(int row_to, int row_from, int column_to, int column_from)
     ilegalno = 1;
   }
 }
-
 //kralj
 void kralj(int row_to, int row_from, int column_to, int column_from)
 {
+  if(na_potezu == true) na_potezu = false;   else na_potezu = true;
+  Serial.println(na_potezu);
   int column_to_int = 0, column_from_int = 0;
   column_to_int = column_to;
   column_from_int = column_from;
   int moze=1;
-
-<<<<<<< Updated upstream
   if(board[row_from][column_from_int] == 'K' || board[row_from][column_from_int] == 'k')
   {
     if(abs(row_from-row_to)<=1 && abs(column_from-column_to)<=1)
     {
       if(board[row_to][column_to_int]==' ')
       {
-=======
   if(toUpperCase(board[row_from][column_from]) == 'K')
   {
     if(abs(row_from-row_to)<2 && abs(column_from-column_to)<2)
     {
       if(board[row_to][column_to_int]!=' ')
         moze=0;
->>>>>>> Stashed changes
       if(board[row_from][column_from_int]=='k')
       {
         if(board[row_to+1][column_to_int]=='K')
@@ -854,7 +976,6 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
       else
         ilegalno=1;
     }
-<<<<<<< Updated upstream
     else if(isUpperCase (board[row_from][column_from_int])!= isUpperCase (board[row_to][column_to_int]))
     {
       moze=1;
@@ -891,12 +1012,14 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
       
    }
   }
-  
-        
+ }
+}
 }
 
 void kraljica(int row_to, int row_from, int column_to, int column_from)
 {
+  if(na_potezu == true) na_potezu = false;   else na_potezu = true;
+  Serial.println(na_potezu);
   int column_to_int = 0, column_from_int = 0;
   column_to_int = column_to;
   column_from_int = column_from;
@@ -1225,26 +1348,12 @@ void kraljica(int row_to, int row_from, int column_to, int column_from)
 }
 
 void whichFigure(int column_to, int column_from, int row_to, int row_from) {
-    if (board[row_from][column_from] == 'p' || board[row_from][column_from] == 'P') { Serial.println("pijun"); pijuni(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'r' || board[row_from][column_from] == 'R'){ Serial.println("kula"); kula(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'h' || board[row_from][column_from] == 'H'){ Serial.println("konj"); konj(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'c' || board[row_from][column_from] == 'C'){ Serial.println("lovac"); lovac(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'k' || board[row_from][column_from] == 'K'){ Serial.println("kralj"); kralj(row_to, row_from, column_to, column_from);}
-    else if (board[row_from][column_from] == 'q' || board[row_from][column_from] == 'Q') { Serial.println("kraljica"); kraljica(row_to, row_from, column_to, column_from);}
-=======
-    else
-      ilegalno=1;
-  }
-}
-
-void whichFigure(int column_to, int column_from, int row_to, int row_from) {
     if ((board[row_from][column_from] == 'p' && na_potezu == 0) || (board[row_from][column_from] == 'P' && na_potezu == 1)) { Serial.println("pijun"); pijuni(row_to, row_from, column_to, column_from); }
     else if ((board[row_from][column_from] == 'r' && na_potezu == 0) || (board[row_from][column_from] == 'R' &&  na_potezu == 1)){ Serial.println("kula"); kula(row_to, row_from, column_to, column_from);}
     else if ((board[row_from][column_from] == 'h' && na_potezu == 0) || (board[row_from][column_from] == 'H' &&  na_potezu == 1)){ Serial.println("konj"); konj(row_to, row_from, column_to, column_from);}
     else if ((board[row_from][column_from] == 'c' && na_potezu == 0) || (board[row_from][column_from] == 'C' &&  na_potezu == 1)){ Serial.println("lovac"); lovac(row_to, row_from, column_to, column_from);}
     else if ((board[row_from][column_from] == 'k' && na_potezu == 0) || (board[row_from][column_from] == 'K' &&  na_potezu == 1)){ Serial.println("kralj"); kralj(row_to, row_from, column_to, column_from);}
-    else if ((board[row_from][column_from] == 'q' && na_potezu == 0) || (board[row_from][column_from] == 'Q' &&  na_potezu == 1)) Serial.println("kraljica(row_to, row_from, column_to, column_from)");
->>>>>>> Stashed changes
+    else if ((board[row_from][column_from] == 'q' && na_potezu == 0) || (board[row_from][column_from] == 'Q' &&  na_potezu == 1)){ Serial.println("kraljica"); kraljica(row_to, row_from, column_to, column_from);}
 }
 
 void setup() {

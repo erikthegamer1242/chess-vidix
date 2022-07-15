@@ -10,10 +10,13 @@
 #define TFT_RED 0xF800
 #define TFT_Tamni_Kvadratic 0x6982
 #define TFT_Svjetli_Kvadratic 0xF693
+#define TFT_WHITE 0xFFFF
+#define TFT_BLACK 0x0000
 
 int x_pokazivac =0 ,y_pokazivac = 0,  ud = 35, lr = 34,  UD , LR,x_stari,y_stari,A=32,B=33,a,b,x,y, restart = 27, redraw=39;
 bool drop = false,zastave;
 int ilegalno = 0;
+int na_potezu = 1;
 char bijeli_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
 char crni_jede[2][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -37,6 +40,35 @@ int return_color(int x, int y) {
   
 }
 
+const uint8_t fig[6][32] PROGMEM={
+{0x0, 0x0,  0x0,  0x0,  0x0,  0x0,  0x3,  0xC0, 0x7,  0xE0, 0x7,  0xE0, 0x3,  0xC0, 0x3,  0xC0,
+0x7,  0xE0, 0x3,  0xC0, 0x3,  0xC0, 0x7,  0xE0, 0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0, 0x0,  0x0}, 
+{0x0, 0x0,  0x3,  0x40, 0x7,  0xE0, 0xF,  0xF0, 0x1F, 0xF8, 0x3F, 0xFC, 0x39, 0xFC, 0x33, 0xFC,
+0x7,  0xFC, 0xF,  0xF8, 0xF,  0xF0, 0x7,  0xE0, 0x3,  0xC0, 0x7,  0xE0, 0x1F, 0xF8, 0x0,  0x0}, 
+{0x1, 0x80, 0x3,  0xC0, 0x1,  0x80, 0xF,  0xF0, 0x1F, 0xF8, 0x1F, 0xF8, 0x1F, 0xF8, 0x1F, 0xF8,
+0x1F, 0xF8, 0x1F, 0xF8, 0xF,  0xF0, 0x7,  0xE0, 0x3,  0xC0, 0x31, 0x8C, 0x7F, 0xFE, 0x0,  0x0}, 
+{0x0, 0x0,  0x19, 0x98, 0x1F, 0xF8, 0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0,
+0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0, 0xF,  0xF0, 0x1F, 0xF8, 0x1F, 0xF8, 0x0,  0x0},
+{0x19, 0x98, 0xD9, 0x9B, 0xD9, 0x9B, 0xD9, 0x9B, 0x6D, 0xB6, 0x6D, 0xB6, 0x6D, 0xB6, 0x35, 0xAC,
+0x3F, 0xFC, 0x3F, 0xFC, 0x3F, 0xFC, 0x1F, 0xF8, 0xF,  0xF0, 0xF,  0xF0, 0x1F, 0xF8, 0x0,  0x0},
+{0x1, 0x80, 0x1,  0x80, 0x79, 0x9E, 0x7D, 0xBE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+0x7F, 0xFE, 0x3F, 0xFC, 0x3F, 0xFC, 0x1F, 0xF8, 0xF,  0xF0, 0xF,  0xF0, 0x1F, 0xF8, 0x0,  0x0} 
+};
+
+void drawBitmap(int16_t x, int16_t y,
+ const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color) {
+
+  int16_t i, j, byteWidth = (w + 7) / 8;
+  uint8_t byte;
+
+  for(j=0; j<h; j++) {
+    for(i=0; i<w; i++) {
+      if(i & 7) byte <<= 1;
+      else      byte   = pgm_read_byte(bitmap + j * byteWidth + i / 8);
+      if(byte & 0x80) {tft.drawPixel(x+i*1.4, y+j*1.4, color);}
+    }
+  }
+}
 
 void draw() {
   tft.setRotation(3);
@@ -79,8 +111,44 @@ void draw() {
 
   for(int j = 0; j < 240; j+=30) {
     for(int i = 0; i < 240; i+=30) {
-        tft.setCursor(48 + i ,j + 5);
-        tft.print(board[boardY][boardX]);
+        //tft.setCursor(48 + i ,j + 5);
+        //tft.print(board[boardY][boardX]);
+        if(board[boardY][boardX] == 'p') {
+           drawBitmap(45 + i,j + 5,&fig[0][0], 15 , 15,TFT_WHITE); 
+        }
+        if(board[boardY][boardX] == 'h') {
+           drawBitmap(45 + i,j + 5,&fig[1][0], 15 , 15,TFT_WHITE); 
+        }
+        if(board[boardY][boardX] == 'c') {
+           drawBitmap(45 + i,j + 5,&fig[2][0], 15 , 15,TFT_WHITE); 
+        }
+        if(board[boardY][boardX] == 'r') {
+           drawBitmap(45 + i,j + 5,&fig[3][0], 15 , 15,TFT_WHITE); 
+        }
+        if(board[boardY][boardX] == 'q') {
+           drawBitmap(45 + i,j + 5,&fig[4][0], 15 , 15,TFT_WHITE); 
+        }
+        if(board[boardY][boardX] == 'k') {
+           drawBitmap(45 + i,j + 5,&fig[5][0], 15 , 15,TFT_WHITE); 
+        }
+        if(board[boardY][boardX] == 'P') {
+           drawBitmap(45 + i,j + 5,&fig[0][0], 15 , 15,TFT_BLACK); 
+        }
+        if(board[boardY][boardX] == 'H') {
+           drawBitmap(45 + i,j + 5,&fig[1][0], 15 , 15,TFT_BLACK); 
+        }
+        if(board[boardY][boardX] == 'C') {
+           drawBitmap(45 + i,j + 5,&fig[2][0], 15 , 15,TFT_BLACK); 
+        }
+        if(board[boardY][boardX] == 'R') {
+           drawBitmap(45 + i,j + 5,&fig[3][0], 15 , 15,TFT_BLACK); 
+        }
+        if(board[boardY][boardX] == 'Q') {
+           drawBitmap(45 + i,j + 5,&fig[4][0], 15 , 15,TFT_BLACK); 
+        }
+        if(board[boardY][boardX] == 'K') {
+           drawBitmap(45 + i,j + 5,&fig[5][0], 15 , 15,TFT_BLACK); 
+        }
         boardX++;
     }
     boardX = 0;
@@ -758,12 +826,12 @@ void kralj(int row_to, int row_from, int column_to, int column_from)
   column_from_int = column_from;
   int moze=1;
 
-  if(board[row_from][column_from_int] == 'K' || board[row_from][column_from_int] == 'k')
+  if(toUpperCase(board[row_from][column_from]) == 'K')
   {
-    if(abs(row_from-row_to)<=1 && abs(column_from-column_to)<=1)
+    if(abs(row_from-row_to)<2 && abs(column_from-column_to)<2)
     {
-      if(board[row_to][column_to_int]==' ')
-      {
+      if(board[row_to][column_to_int]!=' ')
+        moze=0;
       if(board[row_from][column_from_int]=='k')
       {
         if(board[row_to+1][column_to_int]=='K')
